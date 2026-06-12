@@ -1,5 +1,10 @@
 name: Build newest deb package for aarch64 debian
-on: [push]
+
+on:
+  push:
+    tags:
+      - "*"
+
 jobs:
   build:
     runs-on: ubuntu-24.04-arm
@@ -54,4 +59,3 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: /tmp/indi/release.tar.gz
-      
