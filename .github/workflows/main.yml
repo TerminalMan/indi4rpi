@@ -28,5 +28,7 @@ jobs:
           apt source indi
           git clone --depth 1 https://github.com/indilib/indi.git
           cd indi
-          mk-build-deps -i -r debian/control
-          dpkg-buildpackage -us -uc -b
+          mk-build-deps -i -r debian/control -t 'apt-get -y --no-install-recommends'
+
+      - name: Build
+        run: dpkg-buildpackage -us -uc -b
