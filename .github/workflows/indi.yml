@@ -104,7 +104,7 @@ jobs:
           cd phd2
           mkdir -p tmp
           cd tmp
-          cmake -DUSE_SYSTEM_LIBINDI=1
+          cmake -DUSE_SYSTEM_LIBINDI=1 ..
           make
           ls
 
