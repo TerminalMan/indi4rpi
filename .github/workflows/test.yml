@@ -25,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: file.txt
-          path: /tmp/file.txt
+          path: /tmp/*.txt
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
