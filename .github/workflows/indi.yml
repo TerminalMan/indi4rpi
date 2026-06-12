@@ -47,15 +47,16 @@ jobs:
       - name: Package Deb Files
         run: |
           cd /tmp/indi/
-          tar -czvf release.tar.gz *.deb
+          tar -czvf release.tar.gz indi-bin_*.deb libindi1_* libindi-data_* libindi-dev_*
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: debian-packages
-          path: /tmp/indi/release.tar.gz
+#      - name: Upload artifacts
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: debian-packages
+#          path: /tmp/indi/release.tar.gz
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           files: /tmp/indi/release.tar.gz
