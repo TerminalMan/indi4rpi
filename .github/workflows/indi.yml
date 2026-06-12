@@ -90,8 +90,12 @@ jobs:
               libwxgtk3.2-dev wx-common wx3.2-i18n \
               libnova-dev gettext zlib1g-dev libx11-dev \
               libcurl4-gnutls-dev libopencv-dev libeigen3-dev \
-              libgtest-dev
-          apt install -y ./libindi_dev.deb
+              libgtest-dev 7zip
+
+      - name: Install indi Dependency
+        run: |
+          7z x libindi_dev
+          apt install -y ./indi*deb ./libindi*deb
 
       - name: Clone openphd2 Repo
         run: git clone --depth 1 https://github.com/OpenPHDGuiding/phd2
