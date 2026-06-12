@@ -1,8 +1,13 @@
 name: Build newest deb package for aarch64 debian
 
+#on:
+#  push:
+#    tags:
+#      - "*"
+
 on:
   push:
-    tags:
+    branches:
       - "*"
 
 jobs:
@@ -52,14 +57,14 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: libindi_dev
+          name: libindi_dev.deb
           path: /tmp/indi/libindi-dev_*
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          files: /tmp/indi/indi.tar.gz
+#      - name: Create Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          tag_name: ${{ github.ref_name }}
+#          files: /tmp/indi/indi.tar.gz
 
   openphd2:
     needs: indi
@@ -71,6 +76,28 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: libindi_dev
-          path: libindi_dev
+          name: libindi_dev.deb
+          path: .
+
+      - name: Install Dependencies
+        run: |
+          apt install build-essential git cmake pkg-config \
+              libwxgtk3.2-dev wx-common wx3.2-i18n \
+              libnova-dev gettext zlib1g-dev libx11-dev \
+              libcurl4-gnutls-dev libopencv-dev libeigen3-dev \
+              libgtest-dev
+          apt install ./libindi_dev.deb
+
+      - name: Clone openphd2 Repo
+        run: git clone --depth 1 https://github.com/OpenPHDGuiding/phd2
+
+      - name: Build env setup
+        run: |
+          cd phd2
+          mkdir -p tmp
+          cd tmp
+          cmake -DUSE_SYSTEM_LIBINDI=1
+          make
+          ls
+
 
