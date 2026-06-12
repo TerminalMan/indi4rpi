@@ -17,4 +17,4 @@ jobs:
       - name: Install Dependencies
         run: |
               apt update
-              apt install git
+              apt install -y git
