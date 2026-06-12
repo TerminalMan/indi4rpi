@@ -10,5 +10,11 @@ jobs:
     steps:
       - name: uname
         run: uname -m
+
       - name: OS
         run: cat /etc/os-release
+
+      - name: Install Dependencies
+        run: |
+              apt update
+              apt install git
