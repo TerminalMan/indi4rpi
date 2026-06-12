@@ -31,4 +31,25 @@ jobs:
           mk-build-deps -i -r debian/control -t 'apt-get -y --no-install-recommends'
           pwd
           ls
+
+      - name: Build Indi Package
+        run: |
+          cd /tmp/indi/indi
           dpkg-buildpackage -us -uc -b
+
+      - name: Package Deb Files
+        run: |
+          cd /tmp/indi/
+          tar -czvf release.tar.gz *.deb
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: debian-packages
+          path: /tmp/indi/release.tar.gz
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+         with:
+           files: /tmp/indi/release.tar.gz
+      
