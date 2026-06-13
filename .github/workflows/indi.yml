@@ -108,6 +108,9 @@ jobs:
           cmake -DUSE_SYSTEM_LIBINDI=1 ..
           make
           ls
+          pwd
+          echo $GITHUB_WORKSPACE
+          ls $GITHUB_WORKSPACE
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
