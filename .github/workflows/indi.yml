@@ -90,7 +90,7 @@ jobs:
               libwxgtk3.2-dev wx-common wx3.2-i18n \
               libnova-dev gettext zlib1g-dev libx11-dev \
               libcurl4-gnutls-dev libopencv-dev libeigen3-dev \
-              libgtest-dev
+              libgtest-dev libcfitsio-dev
 
       - name: Install indi Dependency
         run: |
@@ -102,10 +102,18 @@ jobs:
       - name: Build env setup
         run: |
           cd phd2
+          echo 'remove_definitions(-DHAVE_QHY_CAMERA=1)' >> thirdparty/thirdparty.cmake
           mkdir -p tmp
           cd tmp
           cmake -DUSE_SYSTEM_LIBINDI=1 ..
           make
           ls
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: openphd2
+          path: $GITHUB_WORKSPACE/phd2/tmp
+     
 
 
