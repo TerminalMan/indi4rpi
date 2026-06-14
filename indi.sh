@@ -1,0 +1,31 @@
+#!/bin/bash
+
+VERSION=2.2.2
+
+BUILDDIR=/tmp/indi
+OUTPUTDIR=/tmp/output
+
+mkdir $BUILDDIR
+mkdir -p $OUTPUTDIR
+
+cd $BUILDDIR
+
+sed -i 's/Types: deb/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
+apt update
+apt install -y \
+	git dpkg-dev devscripts equivs \
+	cdbs cmake pkgconf libcfitsio-dev \
+	libnova-dev libusb-dev zlib1g-dev \
+	libjpeg-dev libgsl-dev liberfa-dev \
+	libcurl4-gnutls-dev libtheora-dev \
+	libogg-dev libfftw3-dev libev-dev \
+	librtlsdr-dev libxisf-dev libudev-dev
+
+apt source indi
+git clone --depth 1 --branch v$VERSION https://github.com/indilib/indi.git
+
+cd indi
+dpkg-buildpackage -us -uc -b
+
+cd $BUILDDIR
+cp indi-bin_*deb libindi1_*deb libindi-data_*deb libindi-dev_*deb $OUTPUTDIR

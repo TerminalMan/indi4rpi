@@ -1,0 +1,34 @@
+name: Build newest deb package for aarch64 debian
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+
+    container:
+      image: debian:trixie
+
+    steps:
+      - name: Get INDI Sources
+        uses: actions/checkout@v3
+
+      - name: Build Indi Debian Package
+        run: bash indi.sh
+
+      - name: Build Openphd2 Debian Package
+        run: bash openphd2.sh
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path : |
+            /tmp/output/indi-bin_*.deb
+            /tmp/output/libindi-dev_*.deb
+            /tmp/output/libindi-data_*.deb
+            /tmp/output/libindi1_*.deb
+            /tmp/output/phd2_*deb
